@@ -1,0 +1,13 @@
+Dockerfile
+.dockerignore
+README.md
+.git*
+.vscode
+.env*
+.docker-compose
+*.log
+
+node_modules
+pnpm-debug.log
+.next
+.jest_cache
