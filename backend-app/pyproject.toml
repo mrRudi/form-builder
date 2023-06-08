@@ -12,7 +12,6 @@ dependencies = [
     "pydantic>=1.10.8",
 ]
 requires-python = ">=3.11"
-readme = "README.md"
 license = {text = "MIT"}
 
 [build-system]

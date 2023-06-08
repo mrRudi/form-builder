@@ -9,7 +9,7 @@ RUN pip install pdm
 
 WORKDIR /code
 
-COPY pyproject.toml pdm.lock README.md ./
+COPY pyproject.toml pdm.lock ./
 RUN pdm install --prod --no-lock --no-editable
 
 COPY ./app /code/app
