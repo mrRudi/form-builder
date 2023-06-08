@@ -1,0 +1,35 @@
+version: '3'
+services:
+
+  # front-app:
+
+  back-app:
+    container_name: back-app
+    build:
+      context: ./backend-app
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_URL=postgresql://formbuilderuser:pgpwdformbuilder@db_postgres:5432/formbuilderdb
+    # volumes:
+    #   - ./backend/app:/app
+    #   - ./backend/assets:/assets
+    depends_on:
+      - db_postgres
+    restart: "no"
+
+  db_postgres:
+    image: postgres:15.3
+    container_name: db_postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata_vol:/var/lib/postgresql/data
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_DB=formbuilderdb
+      - POSTGRES_USER=formbuilderuser
+      - POSTGRES_PASSWORD=pgpwdformbuilder
+    # restart: always
+    restart: unless-stopped
