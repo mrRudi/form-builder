@@ -1,0 +1,14 @@
+Dockerfile
+.dockerignore
+README.md
+.git*
+.vscode
+.env*
+.docker-compose
+*.log
+
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
