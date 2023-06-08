@@ -1,0 +1,33 @@
+
+[project]
+name = "backend-app"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "hecksr", email = "hecksr@i.ua"},
+]
+dependencies = [
+    "fastapi[all]>=0.95.2",
+    "uvicorn[standard]>=0.22.0",
+    "pydantic>=1.10.8",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.pdm.dev-dependencies]
+test = [
+    "pytest>=7.3.1",
+]
+lint = [
+    "flake8>=5.0.4",
+    "black>=23.3.0",
+]
+doc = ["mkdocs"]
+
+[tool.pdm.scripts]
+dev = "uvicorn app.main:app --reload"
