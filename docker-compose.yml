@@ -7,11 +7,10 @@ services:
       context: ./frontend-app
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "${FRONT_DOCKER_PORT}:${FRONT_APP_PORT}"
     env_file:
-      - ./frontend-app/.env.production
+      - ./.env
     depends_on:
-      - db_postgres
       - back-app
     restart: "no"
 
@@ -21,27 +20,66 @@ services:
       context: ./backend-app
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
-    environment:
-      - DB_URL=postgresql://formbuilderuser:pgpwdformbuilder@db_postgres:5432/formbuilderdb
-    # volumes:
-    #   - ./backend/app:/app
-    #   - ./backend/assets:/assets
+      - "${BACK_DOCKER_PORT}:${BACK_APP_PORT}"
+    env_file:
+      - ./.env
     depends_on:
       - db_postgres
+      - rabbitmq-broker
+    networks:
+      - postgres_ntw
+      - rabbitmq_ntw
     restart: "no"
 
   db_postgres:
     image: postgres:15.3
     container_name: db_postgres
     ports:
-      - "5432:5432"
+      - "${POSTGRE_DOCKER_PORT}:${POSTGRE_DOCKER_PORT}"
+    env_file:
+      - ./.env
     volumes:
-      - pgdata_vol:/var/lib/postgresql/data
-    environment:
-      - PGDATA=/var/lib/postgresql/data/pgdata
-      - POSTGRES_DB=formbuilderdb
-      - POSTGRES_USER=formbuilderuser
-      - POSTGRES_PASSWORD=pgpwdformbuilder
-    # restart: always
+      - ./docker-conf/postgresql/data:/var/lib/postgresql/data
+    networks:
+      - postgres_ntw
     restart: unless-stopped
+
+  pgadmin:
+    user: "${UID}:${GID}"
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    env_file:
+      - ./.env
+    volumes:
+      - ./docker-conf/pgadmin:/var/lib/pgadmin
+    ports:
+      - "${PGADMIN_DOCKER_PORT}:${PGADMIN_CONTAINER_PORT}"
+    networks:
+      - postgres_ntw
+    depends_on:
+      - db_postgres
+    restart: unless-stopped
+
+  rabbitmq-broker:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq-broker
+    hostname: rabbitmq
+    volumes:
+      - ./docker-conf/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ./docker-conf/rabbitmq/log/:/var/log/rabbitmq
+      - ./docker-conf/rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins
+    ports:
+      - "${RABBITMQ_UI_DOCKER_PORT}:${RABBITMQ_UI_DOCKER_PORT}"
+      - "${RABBITMQ_AMQP_DOCKER_PORT}:${RABBITMQ_AMQP_DOCKER_PORT}"
+    env_file:
+      - ./.env
+    networks:
+      - rabbitmq_ntw
+    restart: unless-stopped
+
+networks:
+  rabbitmq_ntw:
+    driver: bridge
+  postgres_ntw:
+    driver: bridge

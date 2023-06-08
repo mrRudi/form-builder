@@ -42,7 +42,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/next.config.js ./
 
 USER nextjs
-EXPOSE ${FRONT_SERVICE_PORT}
-ENV PORT ${FRONT_SERVICE_PORT}
+EXPOSE ${FRONT_APP_PORT}
+ENV PORT ${FRONT_APP_PORT}
 
 CMD ["node", "./server.js"]
