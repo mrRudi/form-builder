@@ -1,7 +1,19 @@
 version: '3'
 services:
 
-  # front-app:
+  front-app:
+    container_name: front-app
+    build:
+      context: ./frontend-app
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./frontend-app/.env.production
+    depends_on:
+      - db_postgres
+      - back-app
+    restart: "no"
 
   back-app:
     container_name: back-app
