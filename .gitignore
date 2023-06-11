@@ -12,3 +12,6 @@ venv.bak/
 
 # docker volumes
 docker-conf
+
+# obsidian
+**/.obsidian/plugins

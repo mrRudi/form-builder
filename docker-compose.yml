@@ -4,7 +4,7 @@ services:
   front-app:
     container_name: front-app
     build:
-      context: ./frontend-app
+      context: ./dev/frontend-app
       dockerfile: Dockerfile
     ports:
       - "${FRONT_DOCKER_PORT}:${FRONT_APP_PORT}"
@@ -17,7 +17,7 @@ services:
   back-app:
     container_name: back-app
     build:
-      context: ./backend-app
+      context: ./dev/backend-app
       dockerfile: Dockerfile
     ports:
       - "${BACK_DOCKER_PORT}:${BACK_APP_PORT}"
