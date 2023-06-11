@@ -1,0 +1,20 @@
+{
+  "promptDelete": false,
+  "attachmentFolderPath": "Vault_res/_Files",
+  "alwaysUpdateLinks": true,
+  "newFileLocation": "folder",
+  "newFileFolderPath": "Vault/Incoming",
+  "spellcheckLanguages": [
+    "en-US",
+    "uk",
+    "en",
+    "en-GB"
+  ],
+  "userIgnoreFilters": [
+    "backend-app/.venv/",
+    "backend-app/.vscode/",
+    "backend-app/build/",
+    "frontend-app/.next",
+    "frontend-app/node_modules"
+  ]
+}
